@@ -47,7 +47,7 @@ public interface ObjectStoreClient {
    * @param headers    The headers to be used during upload.
    * @throws ObjectStoreOperationFailedException if the operation could not be performed.
    */
-  void putObject(String bucket, String objectName, Path filePath, Map<String, String> headers)
+  void putObject(String bucket, String objectName, Path filePath, Map<HeaderKey, String> headers)
       throws ObjectStoreOperationFailedException;
 
   /**
@@ -67,4 +67,18 @@ public interface ObjectStoreClient {
    * @throws ObjectStoreOperationFailedException if the operation could not be performed.
    */
   boolean bucketExists(String bucket) throws ObjectStoreOperationFailedException;
+
+  /**
+   * Provides the supported header keys.
+   */
+  enum HeaderKey {
+    CACHE_CONTROL("Cache-Control"),
+    AMZ_ACL("x-amz-acl");
+
+    public String keyValue;
+
+    HeaderKey(String keyValue) {
+      this.keyValue = keyValue;
+    }
+  }
 }
