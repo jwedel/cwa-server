@@ -75,7 +75,7 @@ public interface ObjectStoreClient {
     CACHE_CONTROL("Cache-Control"),
     AMZ_ACL("x-amz-acl");
 
-    public String keyValue;
+    public final String keyValue;
 
     HeaderKey(String keyValue) {
       this.keyValue = keyValue;

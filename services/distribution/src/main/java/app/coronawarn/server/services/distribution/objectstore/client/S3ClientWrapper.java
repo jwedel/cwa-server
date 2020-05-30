@@ -92,20 +92,22 @@ public class S3ClientWrapper implements ObjectStoreClient {
 
   @Override
   public void removeObjects(String bucket, List<String> objectNames) {
+    if (objectNames.isEmpty()) {
+      return;
+    }
+
     Collection<ObjectIdentifier> identifiers = objectNames.stream()
-        .map(key -> ObjectIdentifier.builder().key(key).build())
-        .collect(toList());
+        .map(key -> ObjectIdentifier.builder().key(key).build()).collect(toList());
 
     try {
       DeleteObjectsResponse response = s3Client.deleteObjects(
           DeleteObjectsRequest.builder()
               .bucket(bucket)
-              .delete(Delete.builder().objects(identifiers).build())
-              .build());
+              .delete(Delete.builder().objects(identifiers).build()).build());
 
       if (response.hasErrors()) {
         String errMessage = "Failed to remove objects from object store.";
-        logger.error("{} {}", errMessage, response.errors().toString());
+        logger.error("{} {}", errMessage, response.errors());
         throw new ObjectStoreOperationFailedException(errMessage);
       }
     } catch (SdkException e) {

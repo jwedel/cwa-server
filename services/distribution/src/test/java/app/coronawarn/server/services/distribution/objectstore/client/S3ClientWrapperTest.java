@@ -19,7 +19,6 @@
 
 package app.coronawarn.server.services.distribution.objectstore.client;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -65,7 +64,7 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.utils.builder.SdkBuilder;
 
 @ExtendWith(SpringExtension.class)
-public class S3ClientWrapperTest {
+class S3ClientWrapperTest {
 
   private static final String VALID_BUCKET_NAME = "myBucket";
   private static final String VALID_PREFIX = "prefix";
@@ -225,7 +224,7 @@ public class S3ClientWrapperTest {
     when(s3Client.deleteObjects(any(DeleteObjectsRequest.class))).thenReturn(actResponse);
 
     assertThatExceptionOfType(ObjectStoreOperationFailedException.class)
-        .isThrownBy(() -> s3ClientWrapper.removeObjects(VALID_BUCKET_NAME, emptyList()));
+        .isThrownBy(() -> s3ClientWrapper.removeObjects(VALID_BUCKET_NAME, List.of(VALID_NAME)));
   }
 
   @ParameterizedTest
@@ -233,6 +232,6 @@ public class S3ClientWrapperTest {
   void removeObjectsThrowsObjectStoreOperationFailedExceptionIfClientThrows(Class<Exception> cause) {
     when(s3Client.deleteObjects(any(DeleteObjectsRequest.class))).thenThrow(cause);
     assertThatExceptionOfType(ObjectStoreOperationFailedException.class)
-        .isThrownBy(() -> s3ClientWrapper.removeObjects(VALID_BUCKET_NAME, emptyList()));
+        .isThrownBy(() -> s3ClientWrapper.removeObjects(VALID_BUCKET_NAME, List.of(VALID_NAME)));
   }
 }

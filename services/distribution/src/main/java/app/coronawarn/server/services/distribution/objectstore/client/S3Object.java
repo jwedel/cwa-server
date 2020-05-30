@@ -19,7 +19,6 @@
 
 package app.coronawarn.server.services.distribution.objectstore.client;
 
-import io.minio.messages.Item;
 import java.util.Objects;
 
 /**
@@ -61,18 +60,6 @@ public class S3Object {
 
   public String getEtag() {
     return etag;
-  }
-
-  /**
-   * Returns a new instance of an S3Object based on the given item.
-   *
-   * @param item the item (as provided by MinIO)
-   * @return the S3Object representation
-   */
-  public static S3Object of(Item item) {
-    // TODO remove
-    String etag = item.etag().replaceAll("\"", "");
-    return new S3Object(item.objectName(), etag);
   }
 
   @Override
